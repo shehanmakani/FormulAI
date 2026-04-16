@@ -1,0 +1,5 @@
+.claude/
+.codex/
+.env
+node_modules/
+dist/
