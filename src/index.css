@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  color: #0f172a;
-  background: #e2e8f0;
+  color: #e5edf7;
+  background: #07111f;
 }
 
 html {
@@ -15,18 +15,63 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top right, rgba(217, 119, 6, 0.12), transparent 28%),
-    linear-gradient(180deg, #e2e8f0 0%, #f8fafc 30%, #f8fafc 100%);
+  background: #07111f;
+  font-feature-settings: "ss01" on, "cv01" on;
 }
 
 * {
   box-sizing: border-box;
 }
 
+::selection {
+  background: rgba(217, 119, 6, 0.4);
+  color: white;
+}
+
+.luxury-range {
+  appearance: none;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(251, 191, 36, 0.55), rgba(71, 85, 105, 0.35));
+}
+
+.luxury-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 2px solid rgba(254, 243, 199, 0.9);
+  background: radial-gradient(circle at 30% 30%, #fde68a, #d97706 70%);
+  box-shadow: 0 0 0 6px rgba(217, 119, 6, 0.12);
+}
+
+.luxury-range::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 2px solid rgba(254, 243, 199, 0.9);
+  background: radial-gradient(circle at 30% 30%, #fde68a, #d97706 70%);
+  box-shadow: 0 0 0 6px rgba(217, 119, 6, 0.12);
+}
+
+.stream-bar {
+  animation: stream-shift 1.6s linear infinite;
+}
+
+@keyframes stream-shift {
+  0% {
+    transform: translateX(-35%);
+  }
+
+  100% {
+    transform: translateX(135%);
+  }
+}
+
 @media print {
   body {
     background: white;
+    color: #0f172a;
   }
 
   .no-print {
@@ -34,7 +79,9 @@ body {
   }
 
   .print-card {
-    box-shadow: none !important;
     border: 1px solid #cbd5e1 !important;
+    background: white !important;
+    box-shadow: none !important;
+    color: #0f172a !important;
   }
 }

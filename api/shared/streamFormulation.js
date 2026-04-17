@@ -39,6 +39,17 @@ const responseSchema = z.object({
   disclaimer: z.string(),
 });
 
+function extractJsonObject(text) {
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+
+  if (start === -1 || end === -1 || end <= start) {
+    throw new Error("No complete JSON object found in model output.");
+  }
+
+  return text.slice(start, end + 1);
+}
+
 function sendEvent(response, event, payload) {
   response.write(`event: ${event}\n`);
   response.write(`data: ${JSON.stringify(payload)}\n\n`);
@@ -74,7 +85,7 @@ export async function streamFormulation(request, response) {
 
   try {
     const stream = await client.chat.completions.create({
-      model: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
+      model: process.env.GROQ_MODEL || "openai/gpt-oss-20b",
       stream: true,
       response_format: { type: "json_object" },
       messages: [
@@ -104,11 +115,16 @@ export async function streamFormulation(request, response) {
 
       if (chunk.choices[0]?.finish_reason === "stop") {
         try {
-          const parsed = responseSchema.parse(JSON.parse(rawOutput));
+          const parsed = responseSchema.parse(
+            JSON.parse(extractJsonObject(rawOutput)),
+          );
           sendEvent(response, "complete", { data: parsed });
         } catch (parseError) {
           sendEvent(response, "error", {
-            error: "Failed to parse formulation response.",
+            error:
+              parseError instanceof Error
+                ? parseError.message
+                : "Failed to parse formulation response.",
           });
         }
       }
