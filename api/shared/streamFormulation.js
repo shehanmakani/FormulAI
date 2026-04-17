@@ -1,7 +1,7 @@
-import OpenAI from "openai";
+import Groq from "groq-sdk";
 import { z } from "zod";
 import { extractPartialFormulation } from "./partials.js";
-import { formulationJsonSchema, systemPrompt } from "./formulationSchema.js";
+import { systemPrompt } from "./formulationSchema.js";
 
 const requestSchema = z.object({
   description: z.string().min(10),
@@ -54,23 +54,17 @@ export async function streamFormulation(request, response) {
     return;
   }
 
-  if (!process.env.OPENAI_API_KEY) {
+  if (!process.env.GROQ_API_KEY) {
     response.status(500).json({
-      error: "OPENAI_API_KEY is missing. Add it to your environment to generate formulations.",
+      error: "GROQ_API_KEY is missing. Add it to your environment.",
     });
     return;
   }
 
-  const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-  const {
-    description,
-    sustainabilityPriority,
-    costSensitivity,
-    region,
-  } = parsedRequest.data;
+  const { description, sustainabilityPriority, costSensitivity, region } =
+    parsedRequest.data;
 
   response.setHeader("Content-Type", "text/event-stream");
   response.setHeader("Cache-Control", "no-cache, no-transform");
@@ -79,53 +73,44 @@ export async function streamFormulation(request, response) {
   let rawOutput = "";
 
   try {
-    const stream = await client.responses.create({
-      model: process.env.OPENAI_MODEL || "gpt-4o-2024-08-06",
+    const stream = await client.chat.completions.create({
+      model: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
       stream: true,
-      instructions: systemPrompt,
-      input: [
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: systemPrompt },
         {
           role: "user",
           content: [
-            {
-              type: "input_text",
-              text: [
-                `Target product: ${description}`,
-                `Sustainability priority: ${sustainabilityPriority}/100`,
-                `Cost sensitivity: ${costSensitivity}`,
-                `Regulatory region: ${region}`,
-                "Return only JSON matching the requested schema. Keep ingredient windows realistic and ensure total ranges imply a plausible finished formula.",
-              ].join("\n"),
-            },
-          ],
+            `Target product: ${description}`,
+            `Sustainability priority: ${sustainabilityPriority}/100`,
+            `Cost sensitivity: ${costSensitivity}`,
+            `Regulatory region: ${region}`,
+            "Return only valid JSON matching the requested schema. Keep ingredient windows realistic and ensure total ranges imply a plausible finished formula.",
+          ].join("\n"),
         },
       ],
-      text: {
-        format: {
-          type: "json_schema",
-          ...formulationJsonSchema,
-        },
-      },
     });
 
-    for await (const event of stream) {
-      if (event.type === "response.output_text.delta") {
-        rawOutput += event.delta;
-        sendEvent(response, "delta", { text: event.delta });
+    for await (const chunk of stream) {
+      const delta = chunk.choices[0]?.delta?.content || "";
+      if (delta) {
+        rawOutput += delta;
+        sendEvent(response, "delta", { text: delta });
         sendEvent(response, "partial", {
           data: extractPartialFormulation(rawOutput),
         });
       }
 
-      if (event.type === "response.completed") {
-        const parsed = responseSchema.parse(JSON.parse(rawOutput));
-        sendEvent(response, "complete", { data: parsed });
-      }
-
-      if (event.type === "error") {
-        sendEvent(response, "error", {
-          error: event.message || "The OpenAI stream returned an error.",
-        });
+      if (chunk.choices[0]?.finish_reason === "stop") {
+        try {
+          const parsed = responseSchema.parse(JSON.parse(rawOutput));
+          sendEvent(response, "complete", { data: parsed });
+        } catch (parseError) {
+          sendEvent(response, "error", {
+            error: "Failed to parse formulation response.",
+          });
+        }
       }
     }
   } catch (error) {
