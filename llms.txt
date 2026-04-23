@@ -1,0 +1,27 @@
+# FormulAI
+> AI-Driven Formulation Intelligence for Specialty Chemicals
+
+FormulAI is a professional-grade assistant for chemical R&D teams. It streamlines the transition from a product brief to a structured formulation concept card, balancing performance, cost, and sustainability.
+
+## Core Capabilities
+- **Generative Formulation:** Streams structured JSON from Groq API to define ingredient ranges and architectures.
+- **Multi-Objective Optimization:** Evaluates trade-offs between sustainability posture, cost, and regulatory compliance.
+- **Expert Review Workspace:** Provides a live environment for chemists to tune "Software-to-Steel" pipelines.
+- **Regulatory Awareness:** Filters concepts based on regional regulatory flags (EU, NA, etc.).
+
+## Technical Stack
+- **Frontend:** React + Vite, styled with Tailwind CSS for a premium "cinematic" UI.
+- **Backend:** Express API (Node.js) optimized for Vercel deployment.
+- **Inference:** Groq API utilizing JSON mode for high-speed, structured data extraction.
+- **State:** Persistence via `localStorage` for session continuity.
+
+## Key Logic & Constraints
+- **Safe-by-Design:** Prioritizes circular innovation and carbon reduction in ingredient selection.
+- **Structured Output:** All formulation data must conform to a strict schema for ingredient ranges and trade-off scoring.
+- **Expert-in-the-Loop:** Explicitly designed as a screening tool that requires final bench validation and SDS review by a qualified chemist.
+
+## Project Structure
+- `/src`: React components and UI logic.
+- `/api`: Vercel serverless functions (entrypoint: `api/formulate.js`).
+- `/server`: Core Express logic for local development.
+- `.env.example`: Template for GROQ_API_KEY and model selection.
