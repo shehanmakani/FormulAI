@@ -2,6 +2,8 @@
 
 FormulAI is a premium-feeling AI formulation assistant for specialty chemical R&D teams. A chemist describes a target product, tunes sustainability and cost posture, picks a regulatory region, and gets back a structured concept card with ingredient ranges, trade-off commentary, regulatory flags, and a polished export view.
 
+![](Gemini_Generated_Image_6y13vi6y13vi6y13.png)
+
 ## Who it's for
 
 - Specialty chemical formulators exploring first-pass concepts
