@@ -1,0 +1,90 @@
+{
+  "captured_at": "2026-04-24",
+  "source": "https://formul-ai-sand.vercel.app/api/formulate",
+  "prompt": "Low-VOC industrial degreaser for heavy equipment with high flash point, strong grease lift, and moderate foam.",
+  "parameters": {
+    "sustainabilityPriority": 72,
+    "costSensitivity": "medium",
+    "region": "Global"
+  },
+  "result": {
+    "formulation_name": "EcoClean HD",
+    "ingredients": [
+      {
+        "name": "Sodium Lauryl Ether Sulfate",
+        "cas_number": "68585-34-2",
+        "function": "Surfactant",
+        "weight_percent_min": 20,
+        "weight_percent_max": 30,
+        "notes": "Bio-based, high flash point"
+      },
+      {
+        "name": "Glycerin",
+        "cas_number": "56-81-5",
+        "function": "Humectant",
+        "weight_percent_min": 10,
+        "weight_percent_max": 20,
+        "notes": "Natural, non-toxic, and biodegradable"
+      },
+      {
+        "name": "Water",
+        "cas_number": "",
+        "function": "Solvent",
+        "weight_percent_min": 40,
+        "weight_percent_max": 60,
+        "notes": "Low-VOC, high flash point"
+      },
+      {
+        "name": "Sodium Citrate",
+        "cas_number": "68-04-2",
+        "function": "Chelating Agent",
+        "weight_percent_min": 2,
+        "weight_percent_max": 5,
+        "notes": "Natural, biodegradable, and non-toxic"
+      },
+      {
+        "name": "Decyl Glucoside",
+        "cas_number": "68515-73-1",
+        "function": "Surfactant",
+        "weight_percent_min": 5,
+        "weight_percent_max": 10,
+        "notes": "Bio-based, gentle, and biodegradable"
+      }
+    ],
+    "trade_offs": [
+      {
+        "dimension": "Grease Lift",
+        "score": 85,
+        "note": "Effective against heavy grease, but may require longer dwell time"
+      },
+      {
+        "dimension": "Foam Level",
+        "score": 60,
+        "note": "Moderate foam level, may not be suitable for high-foam applications"
+      },
+      {
+        "dimension": "Cost",
+        "score": 70,
+        "note": "Medium cost, balanced between performance and affordability"
+      }
+    ],
+    "regulatory_flags": [
+      {
+        "substance": "Sodium Lauryl Ether Sulfate",
+        "jurisdiction": "EU",
+        "flag": "REACH registered"
+      },
+      {
+        "substance": "Glycerin",
+        "jurisdiction": "US",
+        "flag": "EPA approved"
+      },
+      {
+        "substance": "Decyl Glucoside",
+        "jurisdiction": "Global",
+        "flag": "Verify CLP classification"
+      }
+    ],
+    "disclaimer": "This formulation is a first-pass concept and may require further testing and optimization to ensure compliance with all applicable regulations and performance requirements."
+  }
+}

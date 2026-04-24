@@ -1,0 +1,98 @@
+{
+  "captured_at": "2026-04-24",
+  "source": "https://formul-ai-sand.vercel.app/api/formulate",
+  "prompt": "Silicone-free rinse-off hair conditioner for textured hair using a cationic emulsifier system, with rich slip, low buildup, and naturally derived positioning.",
+  "parameters": {
+    "sustainabilityPriority": 74,
+    "costSensitivity": "medium",
+    "region": "Global"
+  },
+  "result": {
+    "formulation_name": "Nourish & Define Conditioner",
+    "ingredients": [
+      {
+        "name": "Cetearyl Alcohol",
+        "cas_number": "67762-27-0",
+        "function": "Emollient, Thickener",
+        "weight_percent_min": 5,
+        "weight_percent_max": 8,
+        "notes": "Derived from natural fatty alcohols"
+      },
+      {
+        "name": "Behentrimonium Chloride",
+        "cas_number": "683-10-3",
+        "function": "Cationic Emulsifier",
+        "weight_percent_min": 2,
+        "weight_percent_max": 4,
+        "notes": "Derived from natural rapeseed oil"
+      },
+      {
+        "name": "Glyceryl Stearate",
+        "cas_number": "110-34-5",
+        "function": "Emollient, Moisturizer",
+        "weight_percent_min": 3,
+        "weight_percent_max": 6,
+        "notes": "Naturally derived from glycerin and stearic acid"
+      },
+      {
+        "name": "Cocos Nucifera (Coconut) Oil",
+        "cas_number": "",
+        "function": "Moisturizer, Emollient",
+        "weight_percent_min": 5,
+        "weight_percent_max": 10,
+        "notes": "Sustainably sourced, high in fatty acids"
+      },
+      {
+        "name": "Panthenol",
+        "cas_number": "81-13-0",
+        "function": "Moisturizer, Humectant",
+        "weight_percent_min": 1,
+        "weight_percent_max": 3,
+        "notes": "Vitamin B5, naturally derived"
+      },
+      {
+        "name": "Citric Acid",
+        "cas_number": "77-92-9",
+        "function": "pH Adjuster",
+        "weight_percent_min": 0.1,
+        "weight_percent_max": 0.5,
+        "notes": "Naturally derived, biodegradable"
+      }
+    ],
+    "trade_offs": [
+      {
+        "dimension": "Cost vs. Performance",
+        "score": 82,
+        "note": "Balanced blend of naturally derived ingredients for optimal conditioning and moisturizing, while managing cost"
+      },
+      {
+        "dimension": "Sustainability vs. Stability",
+        "score": 90,
+        "note": "Highly biodegradable and naturally derived ingredients minimize environmental impact, with a stable and consistent product performance"
+      },
+      {
+        "dimension": "Slip and Detangling vs. Buildup",
+        "score": 85,
+        "note": "Optimized blend of cationic emulsifiers and moisturizers provides excellent slip and detangling, with minimal buildup on hair"
+      }
+    ],
+    "regulatory_flags": [
+      {
+        "substance": "Behentrimonium Chloride",
+        "jurisdiction": "EU",
+        "flag": "Compliant with EU Cosmetics Regulation, but verify supplier registration status"
+      },
+      {
+        "substance": "Cocos Nucifera (Coconut) Oil",
+        "jurisdiction": "Global",
+        "flag": "Screen for potential allergens and ensure sustainable sourcing"
+      },
+      {
+        "substance": "Panthenol",
+        "jurisdiction": "US",
+        "flag": "Compliant with FDA regulations, but ensure manufacturer follows GMP guidelines"
+      }
+    ],
+    "disclaimer": "This formulation is a first-pass concept and may require further development, testing, and optimization to ensure compliance with all applicable regulations and performance requirements."
+  }
+}

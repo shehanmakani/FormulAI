@@ -1,0 +1,90 @@
+{
+  "captured_at": "2026-04-24",
+  "source": "https://formul-ai-sand.vercel.app/api/formulate",
+  "prompt": "Biobased concrete release agent with easy demold, low staining, and good storage stability in cold climates.",
+  "parameters": {
+    "sustainabilityPriority": 72,
+    "costSensitivity": "medium",
+    "region": "Global"
+  },
+  "result": {
+    "formulation_name": "EcoRelease",
+    "ingredients": [
+      {
+        "name": "Rapeseed oil",
+        "cas_number": "8001-21-6",
+        "function": "release agent",
+        "weight_percent_min": 60,
+        "weight_percent_max": 80,
+        "notes": "bio-based, low VOC"
+      },
+      {
+        "name": "Carnauba wax",
+        "cas_number": "8015-86-9",
+        "function": "thickener and stabilizer",
+        "weight_percent_min": 10,
+        "weight_percent_max": 20,
+        "notes": "naturally derived, high melting point"
+      },
+      {
+        "name": "Glycerin",
+        "cas_number": "56-81-5",
+        "function": "humectant and plasticizer",
+        "weight_percent_min": 5,
+        "weight_percent_max": 10,
+        "notes": "bio-based, low VOC"
+      },
+      {
+        "name": "Sodium stearoyl lactylate",
+        "cas_number": "25383-99-7",
+        "function": "emulsifier",
+        "weight_percent_min": 2,
+        "weight_percent_max": 5,
+        "notes": "bio-based, low VOC"
+      },
+      {
+        "name": "Water",
+        "cas_number": "",
+        "function": "solvent",
+        "weight_percent_min": 3,
+        "weight_percent_max": 10,
+        "notes": "low VOC, solvent"
+      }
+    ],
+    "trade_offs": [
+      {
+        "dimension": "cost",
+        "score": 60,
+        "note": "balance between bio-based ingredients and cost-effectiveness"
+      },
+      {
+        "dimension": "performance",
+        "score": 80,
+        "note": "good demold and low staining, but may require adjustments for extreme temperatures"
+      },
+      {
+        "dimension": "sustainability",
+        "score": 85,
+        "note": "high bio-based content, but potential for improvement with alternative emulsifiers"
+      }
+    ],
+    "regulatory_flags": [
+      {
+        "substance": "Rapeseed oil",
+        "jurisdiction": "EU",
+        "flag": "REACH registered"
+      },
+      {
+        "substance": "Carnauba wax",
+        "jurisdiction": "US",
+        "flag": "EPA approved for use in coatings"
+      },
+      {
+        "substance": "Glycerin",
+        "jurisdiction": "Global",
+        "flag": "verify SDS and CLP compliance"
+      }
+    ],
+    "disclaimer": "This formulation is a first-pass concept and may require adjustments based on specific application requirements and regional regulations. It is the responsibility of the manufacturer to ensure compliance with all relevant laws and regulations."
+  }
+}

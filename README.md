@@ -58,6 +58,14 @@ FormulAI is a premium-feeling AI formulation assistant for specialty chemical R&
 
 This project is structured for Vercel with the API entrypoint at `api/formulate.js`. Add the same environment variables in Vercel before deploying.
 
+## Showcase examples
+
+Postable prompt-and-output examples captured from the live app are in [examples/showcase/README.md](./examples/showcase/README.md). That folder includes:
+
+- market-relevant prompts
+- raw JSON outputs from the deployed app
+- short reviewer notes on what is strong versus what still needs validation
+
 ## Notes
 
 Generated formulations are intended for expert screening only. Bench validation, SDS review, supplier confirmation, and jurisdiction-specific compliance review are still required before use.
