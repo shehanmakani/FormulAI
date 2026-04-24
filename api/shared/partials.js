@@ -15,9 +15,29 @@ function extractCompletedObjects(source) {
   const results = [];
   let depth = 0;
   let start = -1;
+  let inString = false;
+  let escaping = false;
 
   for (let index = 0; index < source.length; index += 1) {
     const char = source[index];
+
+    if (escaping) {
+      escaping = false;
+      continue;
+    }
+
+    if (char === "\\") {
+      escaping = true;
+      continue;
+    }
+
+    if (char === "\"") {
+      inString = !inString;
+      continue;
+    }
+
+    if (inString) continue;
+
     if (char === "{") {
       if (depth === 0) start = index;
       depth += 1;
@@ -33,25 +53,71 @@ function extractCompletedObjects(source) {
   return results;
 }
 
-function extractArrayObjects(text, key) {
+function extractBalancedArray(text, key) {
   const keyIndex = text.indexOf(`"${key}"`);
-  if (keyIndex === -1) return [];
+  if (keyIndex === -1) return null;
 
   const arrayStart = text.indexOf("[", keyIndex);
-  if (arrayStart === -1) return [];
+  if (arrayStart === -1) return null;
 
-  const arrayBody = text.slice(arrayStart + 1);
+  let depth = 0;
+  let inString = false;
+  let escaping = false;
+
+  for (let index = arrayStart; index < text.length; index += 1) {
+    const char = text[index];
+
+    if (escaping) {
+      escaping = false;
+      continue;
+    }
+
+    if (char === "\\") {
+      escaping = true;
+      continue;
+    }
+
+    if (char === "\"") {
+      inString = !inString;
+      continue;
+    }
+
+    if (inString) continue;
+
+    if (char === "[") depth += 1;
+    if (char === "]") {
+      depth -= 1;
+      if (depth === 0) {
+        return text.slice(arrayStart + 1, index);
+      }
+    }
+  }
+
+  return null;
+}
+
+function extractArrayObjects(text, key) {
+  const arrayBody = extractBalancedArray(text, key);
+  if (arrayBody === null) return undefined;
+
   return extractCompletedObjects(arrayBody)
     .map((item) => safeJsonParse(item))
     .filter(Boolean);
 }
 
 export function extractPartialFormulation(text) {
-  return {
-    formulation_name: extractStringField(text, "formulation_name"),
-    ingredients: extractArrayObjects(text, "ingredients"),
-    trade_offs: extractArrayObjects(text, "trade_offs"),
-    regulatory_flags: extractArrayObjects(text, "regulatory_flags"),
-    disclaimer: extractStringField(text, "disclaimer"),
-  };
+  const partial = {};
+  const formulationName = extractStringField(text, "formulation_name");
+  const ingredients = extractArrayObjects(text, "ingredients");
+  const tradeOffs = extractArrayObjects(text, "trade_offs");
+  const regulatoryFlags = extractArrayObjects(text, "regulatory_flags");
+  const disclaimer = extractStringField(text, "disclaimer");
+
+  if (formulationName) partial.formulation_name = formulationName;
+  if (ingredients !== undefined) partial.ingredients = ingredients;
+  if (tradeOffs !== undefined) partial.trade_offs = tradeOffs;
+  if (regulatoryFlags !== undefined) partial.regulatory_flags = regulatoryFlags;
+  if (disclaimer) partial.disclaimer = disclaimer;
+
+  return partial;
 }

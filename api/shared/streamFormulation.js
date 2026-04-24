@@ -98,6 +98,33 @@ function buildUserPrompt({
   costSensitivity,
   region,
 }) {
+  const brief = description.toLowerCase();
+  const additionalConstraints = [];
+
+  if (brief.includes("silicone-free")) {
+    additionalConstraints.push(
+      "Do not use silicones or siloxanes such as dimethicone, cyclopentasiloxane, cyclomethicone, or polydimethylsiloxane.",
+    );
+  }
+
+  if (brief.includes("low-voc")) {
+    additionalConstraints.push(
+      "Avoid volatile solvents such as ethanol, isopropanol, acetone, MEK, MIBK, toluene, xylene, NMP, and mineral spirits.",
+    );
+  }
+
+  if (brief.includes("high flash point") || brief.includes("high-flash-point")) {
+    additionalConstraints.push(
+      "Avoid low-flash-point solvents such as ethanol, isopropanol, acetone, MEK, MIBK, ethyl acetate, and n-butyl acetate.",
+    );
+  }
+
+  if (brief.includes("biobased") || brief.includes("bio-based") || brief.includes("naturally derived")) {
+    additionalConstraints.push(
+      "Favor bio-based or naturally derived ingredients and avoid petroleum-heavy components like mineral oil, paraffins, microcrystalline wax, polyethylene wax, and petroleum distillates unless there is no plausible alternative.",
+    );
+  }
+
   return [
     `Target product: ${description}`,
     `Sustainability priority: ${sustainabilityPriority}/100`,
@@ -110,6 +137,9 @@ function buildUserPrompt({
     "Include at least 3 trade_offs.",
     "Include at least 1 regulatory_flag.",
     "Honor explicit brief constraints like silicone-free, low-VOC, bio-based, solvent-free, or region-specific compliance.",
+    "If the brief mentions high flash point, avoid low flash point solvents.",
+    "If the brief asks for a naturally derived or bio-based story, avoid obvious petrochemical ingredients unless absolutely necessary and clearly note the compromise.",
+    ...additionalConstraints,
   ].join("\n");
 }
 
@@ -118,8 +148,9 @@ function validateAgainstBrief(description, payload) {
   const ingredientText = payload.ingredients
     .map((ingredient) => `${ingredient.name} ${ingredient.function} ${ingredient.notes}`.toLowerCase())
     .join(" ");
+  const hasIngredient = (pattern) => pattern.test(ingredientText);
 
-  if (brief.includes("silicone-free") && ingredientText.includes("silicone")) {
+  if (brief.includes("silicone-free") && hasIngredient(/silicone|siloxane|dimethicone|cyclopentasiloxane|cyclomethicone|polydimethylsiloxane/i)) {
     throw new Error("Generated formulation contradicts a silicone-free brief.");
   }
 
@@ -130,8 +161,25 @@ function validateAgainstBrief(description, payload) {
     throw new Error("Generated formulation contradicts a bio-based brief.");
   }
 
-  if (brief.includes("low-voc") && /(nmp|toluene|xylene|mineral spirits|high voc)/i.test(ingredientText)) {
+  if ((brief.includes("biobased") || brief.includes("bio-based") || brief.includes("naturally derived")) &&
+    /(petroleum distillate|petroleum|naphtha|paraffin|mineral oil|polyethylene wax|microcrystalline wax)/i.test(
+      ingredientText,
+    )) {
+    throw new Error("Generated formulation weakens the requested bio-based or naturally derived story.");
+  }
+
+  if (brief.includes("low-voc") &&
+    /(nmp|toluene|xylene|mineral spirits|acetone|mek|mibk|ethanol|isopropyl alcohol|isopropanol|high voc)/i.test(
+      ingredientText,
+    )) {
     throw new Error("Generated formulation contradicts a low-VOC brief.");
+  }
+
+  if ((brief.includes("high flash point") || brief.includes("high-flash-point")) &&
+    /(ethanol|isopropyl alcohol|isopropanol|acetone|mek|mibk|ethyl acetate|n-butyl acetate)/i.test(
+      ingredientText,
+    )) {
+    throw new Error("Generated formulation contradicts a high flash point brief.");
   }
 }
 
